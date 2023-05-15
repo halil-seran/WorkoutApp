@@ -6,12 +6,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
 import PlannerScreen from "../screens/PlannerScreen";
+import WorkoutDetailScreen from "../screens/WorkoutDetailScreen";
+
+type DetailParams = {
+  slug: string;
+};
 
 export type RootStackParamList = {
   Root: undefined;
   // Welcome: undefined;
   Home: undefined;
   Planner: undefined;
+  WorkoutDetail: DetailParams;
 };
 
 export default function Navigation() {
@@ -32,6 +38,7 @@ function RootNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
     </Stack.Navigator>
   );
 }

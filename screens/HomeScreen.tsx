@@ -1,10 +1,9 @@
-import { View, Text, Button, StyleSheet, FlatList } from "react-native";
+import { View, Text, Pressable, StyleSheet, FlatList } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 import data from "../data.json";
 import { Workout } from "../types/data";
 import WorkoutItem from "../components/WorkoutItem";
-import { MeeraText } from "../components/styled/MeeraText";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -15,7 +14,17 @@ function HomeScreen({ navigation }: Props) {
       <FlatList
         data={data as Array<Workout>}
         keyExtractor={(item) => item.slug}
-        renderItem={WorkoutItem}
+        renderItem={({ item }) => {
+          return (
+            <Pressable
+              onPress={() =>
+                navigation.navigate("WorkoutDetail", { slug: item.slug })
+              }
+            >
+              <WorkoutItem item={item} />
+            </Pressable>
+          );
+        }}
       />
     </View>
   );
