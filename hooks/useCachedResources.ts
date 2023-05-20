@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import * as Font from "expo-font";
-import { getData, storeData, containsKey } from "../storage";
-import data from "../data.json";
+import { clearWorkouts, getWorkouts, initWorkouts } from "../storage/workout";
 
 export default function useCachedResources() {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
@@ -9,19 +8,17 @@ export default function useCachedResources() {
   useEffect(() => {
     async function loadResourcesAndDataAsyc() {
       try {
-        const hasWorkouts = await containsKey("workout-data");
-        if (!hasWorkouts) {
-          console.log("storing data");
-          await storeData("workout-data", data);
-        }
+        // await clearWorkouts();
+        await initWorkouts();
+
         await Font.loadAsync({
           meera: require("../assets/fonts/MeeraInimai-Regular.ttf"),
         });
       } catch (e) {
         console.warn(e);
       } finally {
-        const workouts = await getData("workout-data");
-        console.log(workouts);
+        // const workouts = await getWorkouts();
+        // console.log(workouts);
         setIsLoadingComplete(true);
       }
     }
@@ -31,4 +28,3 @@ export default function useCachedResources() {
 
   return isLoadingComplete;
 }
-
