@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet  } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 import { useWorkoutBySlug } from "../hooks/useWorkoutBySlug";
 import { PressableText } from "../components/styled/PressableText";
+import { Modal } from "../components/styled/Modal";
 
 type Props = NativeStackScreenProps<RootStackParamList, "WorkoutDetail"> &
   DetailParams;
@@ -26,7 +27,8 @@ function WorkoutDetailScreen({ route }: Props) {
     <View style={styles.container}>
       <Text style={styles.header}>Workout Detail</Text>
       <Text style={styles.header}>{workout.name}</Text>
-      <PressableText text="Check Sequence" onPress={() => {}} />
+      <Modal />
+      
     </View>
   );
 }
@@ -40,6 +42,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
     fontWeight: "bold",
+  },
+  centerView: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
 });
 
