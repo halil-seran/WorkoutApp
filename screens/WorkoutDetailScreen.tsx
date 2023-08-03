@@ -1,9 +1,12 @@
-import { View, Text, StyleSheet  } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 import { useWorkoutBySlug } from "../hooks/useWorkoutBySlug";
 import { PressableText } from "../components/styled/PressableText";
 import { Modal } from "../components/styled/Modal";
+import { formatSec } from "../utils/time";
+import { FontAwesome } from "@expo/vector-icons";
+import WorkoutItem from "../components/WorkoutItem";
 
 type Props = NativeStackScreenProps<RootStackParamList, "WorkoutDetail"> &
   DetailParams;
@@ -25,10 +28,26 @@ function WorkoutDetailScreen({ route }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Workout Detail</Text>
-      <Text style={styles.header}>{workout.name}</Text>
-      <Modal />
-      
+      <WorkoutItem item={workout} childStyles={{ marginTop: 10 }}>
+        <Modal
+          activator={({ handleOpen }) => (
+            <PressableText text="Check Squence" onPress={handleOpen} />
+          )}
+        >
+          <View>
+            {workout.sequence.map((si, idx) => (
+              <View style={styles.sequenceItem} key={si.slug}>
+                <Text>
+                  {si.name} | {si.type} | {formatSec(si.duration)}
+                </Text>
+                {idx !== workout.sequence.length - 1 && (
+                  <FontAwesome name="arrow-down" size={18} />
+                )}
+              </View>
+            ))}
+          </View>
+        </Modal>
+      </WorkoutItem>
     </View>
   );
 }
@@ -47,6 +66,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+  },
+  sequenceItem: {
+    alignItems: "center",
   },
 });
 

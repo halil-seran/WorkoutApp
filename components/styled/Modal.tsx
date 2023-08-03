@@ -1,8 +1,13 @@
 import { Modal as DefaultModal, View, Text, StyleSheet } from "react-native";
 import { PressableText } from "./PressableText";
-import { useState } from "react";
+import { Children, FunctionComponent, useState } from "react";
 
-export function Modal() {
+type ModalProps = {
+  activator?: FunctionComponent<{ handleOpen: () => void }>;
+  children: React.ReactNode;
+};
+
+export function Modal({ activator: Activator, children }: ModalProps) {
   const [isModalVisible, setModalVisible] = useState(false);
 
   return (
@@ -13,20 +18,18 @@ export function Modal() {
         animationType="slide"
       >
         <View style={styles.centerView}>
-          <Text>new modal</Text>
-          <Text>new modal</Text>
-          <Text>new modal</Text>
-          <Text>new modal</Text>
+          <View style={styles.contentView}>{children}</View>
           <PressableText
             text="Close Modal"
             onPress={() => setModalVisible(false)}
           />
         </View>
       </DefaultModal>
-      <PressableText
-        text="Check Sequence"
-        onPress={() => setModalVisible(true)}
-      />
+      {Activator ? (
+        <Activator handleOpen={() => setModalVisible(true)} />
+      ) : (
+        <PressableText text="Open" onPress={() => setModalVisible(true)} />
+      )}
     </>
   );
 }
@@ -36,5 +39,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+  },
+  contentView: {
+    marginBottom: 20,
   },
 });
