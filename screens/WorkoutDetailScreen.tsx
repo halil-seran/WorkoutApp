@@ -7,6 +7,9 @@ import { Modal } from "../components/styled/Modal";
 import { formatSec } from "../utils/time";
 import { FontAwesome } from "@expo/vector-icons";
 import WorkoutItem from "../components/WorkoutItem";
+import { useEffect, useState } from "react";
+import { SequenceItem } from "../types/data";
+import { useCountDown } from "../hooks/useCountDown";
 
 type Props = NativeStackScreenProps<RootStackParamList, "WorkoutDetail"> &
   DetailParams;
@@ -20,7 +23,20 @@ type DetailParams = {
 };
 
 function WorkoutDetailScreen({ route }: Props) {
+  const [sequence, setSequence] = useState<SequenceItem[]>([]);
+  const [trackerIdx, setTrackerIdx] = useState(-1);
+
   const workout = useWorkoutBySlug(route.params.slug);
+
+  const countDown = useCountDown(
+    trackerIdx,
+    trackerIdx >= 0 ? sequence[trackerIdx].duration : -1
+  );
+
+  const addItemToSequence = (idx: number) => {
+    setSequence([...sequence, workout!.sequence[idx]]);
+    setTrackerIdx(idx);
+  };
 
   if (!workout) {
     return null;
@@ -48,6 +64,15 @@ function WorkoutDetailScreen({ route }: Props) {
           </View>
         </Modal>
       </WorkoutItem>
+      <View>
+        {sequence.length === 0 && (
+          <FontAwesome
+            name="play-circle-o"
+            size={100}
+            onPress={() => addItemToSequence(0)}
+          />
+        )}
+      </View>
     </View>
   );
 }
