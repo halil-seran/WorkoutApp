@@ -33,6 +33,18 @@ function WorkoutDetailScreen({ route }: Props) {
     trackerIdx >= 0 ? sequence[trackerIdx].duration : -1
   );
 
+  useEffect(() => {
+    if (!workout) {
+      return;
+    }
+    if (trackerIdx === workout.sequence.length - 1) {
+      return;
+    }
+    if (countDown === 0) {
+      addItemToSequence(trackerIdx + 1);
+    }
+  }, [countDown]);
+
   const addItemToSequence = (idx: number) => {
     setSequence([...sequence, workout!.sequence[idx]]);
     setTrackerIdx(idx);
@@ -41,6 +53,9 @@ function WorkoutDetailScreen({ route }: Props) {
   if (!workout) {
     return null;
   }
+
+  const hasReachedEnd =
+    sequence.length === workout.sequence.length && countDown === 0;
 
   return (
     <View style={styles.container}>
@@ -64,7 +79,7 @@ function WorkoutDetailScreen({ route }: Props) {
           </View>
         </Modal>
       </WorkoutItem>
-      <View>
+      <View style={styles.centerView}>
         {sequence.length === 0 && (
           <FontAwesome
             name="play-circle-o"
@@ -72,6 +87,20 @@ function WorkoutDetailScreen({ route }: Props) {
             onPress={() => addItemToSequence(0)}
           />
         )}
+        {sequence.length > 0 && countDown >= 0 && (
+          <View>
+            <Text style={{ fontSize: 50 }}>{countDown}</Text>
+          </View>
+        )}
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <Text style={{ fontSize: 35, fontWeight: "bold" }}>
+          {sequence.length === 0
+            ? "Prepare"
+            : hasReachedEnd
+            ? "Great Job!"
+            : sequence[trackerIdx].name}
+        </Text>
       </View>
     </View>
   );
@@ -87,13 +116,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontWeight: "bold",
   },
-  centerView: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-  },
+  // centerView: {
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   flex: 1,
+  // },
   sequenceItem: {
     alignItems: "center",
+  },
+  centerView: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginBottom: 20,
   },
 });
 

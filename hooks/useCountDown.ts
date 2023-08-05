@@ -14,10 +14,10 @@ export function useCountDown(idx: number, initialCount: number) {
 
     intervalRef.current = window.setInterval(() => {
       setCountDown((count) => {
-        console.log(count);
+        // console.log(count);
         return count - 1;
       });
-    }, 1000);
+    }, 50);
 
     return cleanup;
   }, [idx]);
