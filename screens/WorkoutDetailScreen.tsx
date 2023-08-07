@@ -28,6 +28,7 @@ function WorkoutDetailScreen({ route }: Props) {
 
   const workout = useWorkoutBySlug(route.params.slug);
 
+  const startupSeq = ["3", "2", "1", "Go"].reverse();
   const { countDown, isRunning, stop, start } = useCountDown(trackerIdx);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ function WorkoutDetailScreen({ route }: Props) {
 
     setSequence(newSequence);
     setTrackerIdx(idx);
-    start(newSequence[idx].duration);
+    start(newSequence[idx].duration + startupSeq.length);
   };
 
   if (!workout) {
@@ -84,48 +85,54 @@ function WorkoutDetailScreen({ route }: Props) {
           </View>
         </Modal>
       </WorkoutItem>
-      <View style={styles.counterUi}>
-        <View style={styles.counterItem}>
-          {sequence.length === 0 ? (
-            <FontAwesome
-              name="play-circle-o"
-              size={100}
-              onPress={() => addItemToSequence(0)}
-            />
-          ) : isRunning ? (
-            <FontAwesome
-              name="stop-circle-o"
-              size={100}
-              onPress={() => stop()}
-            />
-          ) : (
-            <FontAwesome
-              name="play-circle-o"
-              size={100}
-              onPress={() => {
-                if (hasReachedEnd) {
-                  addItemToSequence(0);
-                } else {
-                  start(countDown);
-                }
-              }}
-            />
+      <View style={styles.wrapper}>
+        <View style={styles.counterUi}>
+          <View style={styles.counterItem}>
+            {sequence.length === 0 ? (
+              <FontAwesome
+                name="play-circle-o"
+                size={100}
+                onPress={() => addItemToSequence(0)}
+              />
+            ) : isRunning ? (
+              <FontAwesome
+                name="stop-circle-o"
+                size={100}
+                onPress={() => stop()}
+              />
+            ) : (
+              <FontAwesome
+                name="play-circle-o"
+                size={100}
+                onPress={() => {
+                  if (hasReachedEnd) {
+                    addItemToSequence(0);
+                  } else {
+                    start(countDown);
+                  }
+                }}
+              />
+            )}
+          </View>
+          {sequence.length > 0 && countDown >= 0 && (
+            <View style={styles.counterItem}>
+              <Text style={{ fontSize: 50 }}>
+                {countDown > sequence[trackerIdx].duration
+                  ? startupSeq[countDown - sequence[trackerIdx].duration - 1]
+                  : countDown}
+              </Text>
+            </View>
           )}
         </View>
-        {sequence.length > 0 && countDown >= 0 && (
-          <View style={styles.counterItem}>
-            <Text style={{ fontSize: 50 }}>{countDown}</Text>
-          </View>
-        )}
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <Text style={{ fontSize: 35, fontWeight: "bold" }}>
-          {sequence.length === 0
-            ? "Prepare"
-            : hasReachedEnd
-            ? "Great Job!"
-            : sequence[trackerIdx].name}
-        </Text>
+        <View style={{ alignItems: "center" }}>
+          <Text style={{ fontSize: 35, fontWeight: "bold" }}>
+            {sequence.length === 0
+              ? "Prepare"
+              : hasReachedEnd
+              ? "Great Job!"
+              : sequence[trackerIdx].name}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -158,6 +165,13 @@ const styles = StyleSheet.create({
   counterItem: {
     flex: 1,
     alignItems: "center",
+  },
+  wrapper: {
+    borderRadius: 10,
+    borderColor: "rgba(0,0,0,0.1)",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    padding: 10,
   },
 });
 
