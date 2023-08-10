@@ -1,19 +1,23 @@
-import { useEffect } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
+import WorkoutForm, { ExerciseForm } from "../components/WorkoutForm";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Planner">;
 
 export default function PlannerScreen({ navigation }: Props) {
-  useEffect(() => {
-    console.log("planner screen rendered");
-  }, []);
+  const handleFormSubmit = (form: ExerciseForm) => {};
 
   return (
-    <View>
-      <Text>Im planner screen</Text>
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+    <View style={styles.container}>
+      <WorkoutForm onSubmit={handleFormSubmit} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+});
