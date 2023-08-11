@@ -1,44 +1,109 @@
 import { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 import { PressableText } from "./styled/PressableText";
 
 export type ExerciseForm = {
   name: string;
   duration: string;
+  reps?: number;
+  type: string;
 };
 
 type WorkoutProps = {
   onSubmit: (form: ExerciseForm) => void;
 };
 
-export default function WorkoutForm({ onSubmit }: WorkoutProps) {
-  const [form, setForm] = useState({
-    name: "",
-    duration: "",
-  });
+const selectionItems = ["exercise", "break", "stretch"];
 
-  const changeText = (name: string) => (text: string) => {
-    setForm({
-      ...form,
-      [name]: text,
-    });
-  };
+export default function WorkoutForm({ onSubmit }: WorkoutProps) {
+  const { control, handleSubmit } = useForm();
+  const [isSelectionOn, setIsSelectionOn] = useState(false);
 
   return (
     <View style={styles.container}>
       <Text> exercise form</Text>
       <View>
-        <TextInput
-          onChangeText={changeText("name")}
-          value={form.name}
-          style={styles.input}
+        <View style={styles.rowContainer}>
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            name="name"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                onChangeText={onChange}
+                value={value}
+                style={styles.input}
+                placeholder="Name"
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            name="duration"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                onChangeText={onChange}
+                value={value}
+                style={styles.input}
+                placeholder="Duration"
+              />
+            )}
+          />
+        </View>
+        <View style={styles.rowContainer}>
+          <Controller
+            control={control}
+            name="reps"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                onChangeText={onChange}
+                value={value}
+                style={styles.input}
+                placeholder="Reps"
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            name="type"
+            render={({ field: { onChange, value } }) => (
+              <View style={{ flex: 1 }}>
+                {isSelectionOn ? (
+                  <View>
+                    {selectionItems.map((selection) => (
+                      <PressableText
+                        style={styles.selection}
+                        key={selection}
+                        text={selection}
+                        onPressIn={() => {
+                          onChange(selection);
+                          setIsSelectionOn(false);
+                        }}
+                      />
+                    ))}
+                  </View>
+                ) : (
+                  <TextInput
+                    onPressIn={() => setIsSelectionOn(true)}
+                    value={value}
+                    placeholder="Type"
+                    style={styles.input}
+                  />
+                )}
+              </View>
+            )}
+          />
+        </View>
+
+        <PressableText
+          text="Submit"
+          onPress={handleSubmit((data) => {
+            onSubmit(data as ExerciseForm);
+          })}
         />
-        <TextInput
-          onChangeText={changeText("duration")}
-          value={form.duration}
-          style={styles.input}
-        />
-        <PressableText text="Submit" onPress={() => onSubmit(form)} />
       </View>
     </View>
   );
@@ -51,9 +116,20 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   input: {
-    height: 40,
-    margin: 12,
+    flex: 1,
+    margin: 2,
     borderWidth: 1,
-    padding: 10,
+    height: 30,
+    padding: 5,
+    borderRadius: 5,
+    borderColor: "rgba(0,0,0,0.4)",
+  },
+  rowContainer: {
+    flexDirection: "row",
+  },
+  selection: {
+    margin: 2,
+    padding: 3,
+    alignSelf: "center",
   },
 });
