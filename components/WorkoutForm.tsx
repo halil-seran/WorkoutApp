@@ -70,7 +70,7 @@ export default function WorkoutForm({ onSubmit }: WorkoutProps) {
             rules={{ required: true }}
             name="type"
             render={({ field: { onChange, value } }) => (
-              <View style={{ flex: 1 }}>
+              <View style={styles.area}>
                 {isSelectionOn ? (
                   <View>
                     {selectionItems.map((selection) => (
@@ -131,5 +131,8 @@ const styles = StyleSheet.create({
     margin: 2,
     padding: 3,
     alignSelf: "center",
+  },
+  area: {
+    flex: 1,
   },
 });
