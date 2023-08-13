@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { PressableText } from "./styled/PressableText";
 
-export type ExerciseForm = {
+export type ExerciseFormData = {
   name: string;
   duration: string;
   reps?: number;
@@ -11,12 +11,12 @@ export type ExerciseForm = {
 };
 
 type WorkoutProps = {
-  onSubmit: (form: ExerciseForm) => void;
+  onSubmit: (form: ExerciseFormData) => void;
 };
 
 const selectionItems = ["exercise", "break", "stretch"];
 
-export default function WorkoutForm({ onSubmit }: WorkoutProps) {
+export default function ExerciseForm({ onSubmit }: WorkoutProps) {
   const { control, handleSubmit } = useForm();
   const [isSelectionOn, setIsSelectionOn] = useState(false);
 
@@ -101,7 +101,7 @@ export default function WorkoutForm({ onSubmit }: WorkoutProps) {
         <PressableText
           text="Submit"
           onPress={handleSubmit((data) => {
-            onSubmit(data as ExerciseForm);
+            onSubmit(data as ExerciseFormData);
           })}
         />
       </View>
