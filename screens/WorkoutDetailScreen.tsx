@@ -71,18 +71,20 @@ function WorkoutDetailScreen({ route }: Props) {
             <PressableText text="Check Squence" onPress={handleOpen} />
           )}
         >
-          <View>
-            {workout.sequence.map((si, idx) => (
-              <View style={styles.sequenceItem} key={si.slug}>
-                <Text>
-                  {si.name} | {si.type} | {formatSec(si.duration)}
-                </Text>
-                {idx !== workout.sequence.length - 1 && (
-                  <FontAwesome name="arrow-down" size={18} />
-                )}
-              </View>
-            ))}
-          </View>
+          {() => (
+            <View>
+              {workout.sequence.map((si, idx) => (
+                <View style={styles.sequenceItem} key={si.slug}>
+                  <Text>
+                    {si.name} | {si.type} | {formatSec(si.duration)}
+                  </Text>
+                  {idx !== workout.sequence.length - 1 && (
+                    <FontAwesome name="arrow-down" size={18} />
+                  )}
+                </View>
+              ))}
+            </View>
+          )}
         </Modal>
       </WorkoutItem>
       <View style={styles.wrapper}>
