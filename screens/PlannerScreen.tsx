@@ -10,6 +10,7 @@ import { PressableText } from "../components/styled/PressableText";
 import { Modal } from "../components/styled/Modal";
 import WorkoutForm, { WorkoutFormData } from "../components/WorkoutForm";
 import { storeWorkout } from "../storage/workout";
+import { PressableThemeText } from "../components/styled/PressableThemeText";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Planner">;
 
@@ -82,7 +83,7 @@ export default function PlannerScreen({ navigation }: Props) {
       <View>
         <Modal
           activator={({ handleOpen }) => (
-            <PressableText
+            <PressableThemeText
               style={{ marginTop: 15 }}
               text="Create Workout"
               onPress={handleOpen}
