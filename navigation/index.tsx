@@ -32,7 +32,7 @@ export default function Navigation({
     </NavigationContainer>
   );
 }
-
+// theme={colorScheme == "light"? DefaultTheme : DarkTheme}
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {

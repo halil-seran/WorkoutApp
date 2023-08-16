@@ -89,6 +89,15 @@ function WorkoutDetailScreen({ route }: Props) {
       </WorkoutItem>
       <View style={styles.wrapper}>
         <View style={styles.counterUi}>
+          {sequence.length > 0 && countDown >= 0 && (
+            <View style={styles.counterItem}>
+              <Text style={{ fontSize: 50 }}>
+                {countDown > sequence[trackerIdx].duration
+                  ? startupSeq[countDown - sequence[trackerIdx].duration - 1]
+                  : countDown}
+              </Text>
+            </View>
+          )}
           <View style={styles.counterItem}>
             {sequence.length === 0 ? (
               <FontAwesome
@@ -116,15 +125,6 @@ function WorkoutDetailScreen({ route }: Props) {
               />
             )}
           </View>
-          {sequence.length > 0 && countDown >= 0 && (
-            <View style={styles.counterItem}>
-              <Text style={{ fontSize: 50 }}>
-                {countDown > sequence[trackerIdx].duration
-                  ? startupSeq[countDown - sequence[trackerIdx].duration - 1]
-                  : countDown}
-              </Text>
-            </View>
-          )}
         </View>
         <View style={{ alignItems: "center" }}>
           <Text style={{ fontSize: 35, fontWeight: "bold" }}>
