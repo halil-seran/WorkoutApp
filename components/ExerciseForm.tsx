@@ -100,14 +100,15 @@ export default function ExerciseForm({ onSubmit }: WorkoutProps) {
             )}
           />
         </View>
-
-        <PressableText
-          style={{ marginTop: 10 }}
-          text="Add Exercise"
-          onPress={handleSubmit((data) => {
-            onSubmit(data as ExerciseFormData);
-          })}
-        />
+        <View style={{ alignItems: "center", marginBottom: 5 }}>
+          <PressableText
+            style={{ marginTop: 5,fontSize:18 }}
+            text="Add Exercise"
+            onPress={handleSubmit((data) => {
+              onSubmit(data as ExerciseFormData);
+            })}
+          />
+        </View>
       </View>
     </View>
   );
@@ -120,11 +121,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   input: {
-    flex: 1,
-    margin: 2,
+    flex: 0.93,
     borderWidth: 1,
     height: 30,
-    padding: 5,
+    // margin: 2,
+    paddingLeft: 5,
+    marginTop: 3,
+    marginBottom: 3,
+    marginRight: 3,
+    marginLeft: 3,
+    // paddingLeft:4,
     borderRadius: 5,
     borderColor: "rgba(0,0,0,0.4)",
   },
@@ -132,8 +138,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   selection: {
-    margin: 2,
-    padding: 3,
+    marginTop: 3,
+
     alignSelf: "center",
   },
   area: {

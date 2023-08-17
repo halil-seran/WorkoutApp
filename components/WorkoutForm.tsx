@@ -30,13 +30,15 @@ export default function WorkoutForm({ onSubmit }: WorkoutProps) {
           />
         )}
       />
-      <PressableText
-        style={{ marginTop: 10 }}
-        text="Confirm"
-        onPress={handleSubmit((data) => {
-          onSubmit(data as WorkoutFormData);
-        })}
-      />
+      <View style={{ alignItems: "center" }}>
+        <PressableText
+          style={{ marginTop: 10,fontSize:18 }}
+          text="Confirm"
+          onPress={handleSubmit((data) => {
+            onSubmit(data as WorkoutFormData);
+          })}
+        />
+      </View>
     </View>
   );
 }
@@ -51,6 +53,7 @@ const styles = StyleSheet.create({
     margin: 2,
     borderWidth: 1,
     height: 30,
+    width: 200,
     padding: 5,
     borderRadius: 5,
     borderColor: "rgba(0,0,0,0.4)",

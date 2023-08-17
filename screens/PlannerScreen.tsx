@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 import ExerciseForm, { ExerciseFormData } from "../components/ExerciseForm";
@@ -83,11 +89,21 @@ export default function PlannerScreen({ navigation }: Props) {
       <View>
         <Modal
           activator={({ handleOpen }) => (
-            <PressableThemeText
-              style={{ marginTop: 15 }}
-              text="Create Workout"
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#F42B03",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 50,
+                marginTop: 10,
+                borderRadius: 10,
+              }}
               onPress={handleOpen}
-            />
+            >
+              <Text style={{ margin: 1, fontSize: 18, color: "white" }}>
+                Create Workout
+              </Text>
+            </TouchableOpacity>
           )}
         >
           {({ handleClose }) => (
